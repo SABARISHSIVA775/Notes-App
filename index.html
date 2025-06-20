@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes App</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+
+    body {
+      font-family: "Noto Serif", serif;
+      background-color: #000000;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    h1 {
+      font-family: "Aclonica", sans-serif;
+      text-align: center;
+      background: linear-gradient(to right, hwb(0 53% 47%),  hwb(0 29% 71%)) ;
+      background-clip: text;
+      color: transparent;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .input-area {
+      background-color: lch(12.74% 0 296.81);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    input,
+    textarea {
+      background-color: lab(11.26% 0 0);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 12px 14px;
+      border: 1px solid hwb(0 39% 61%);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border: 2px solid hsl(218, 92%, 58%);
+      box-shadow: 0 2px 6px hsl(218, 92%, 58%);
+      outline: none;
+    }
+
+    .btns {
+      margin-top: 10px;
+      display: flex;
+      align-items: end;
+      width: 50%;
+      gap: 20px;
+    }
+
+    button {
+      width: 35%;
+      font-family: "Noto Serif", serif;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background-color 0.2s ease;
+    }
+
+    #addNote {
+      background-color: hsl(218, 92%, 58%);
+      border: 2px solid hsl(218, 92%, 58%);
+      transition: all 0.3s ease-in;
+    }
+
+    #clrNote {
+      background-color: #ef4444;
+      border: 2px solid #ef4444;
+      transition: all 0.3s ease-in;
+    }
+
+    #addNote:hover {
+      transform: translateY(-3px) scale(1.02);
+      background-color: transparent;
+      color: hsl(218, 92%, 58%);
+      border: 2px solid hsl(218, 92%, 58%);
+      box-shadow: 0 6px 16px hsl(218, 92%, 58%);
+    }
+
+    #clrNote:hover {
+      transform: translateY(-3px) scale(1.02);
+      background-color: transparent;
+      color: #ef4444;
+      border: 2px solid #ef4444;
+      box-shadow: 0 6px 15px #ef4444;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    .note-card {
+      background: hwb(0 19% 81%);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .note-card span {
+      color: lab(77.7% 0 -0.01);
+      font-size: 1rem;
+      background-color: lch(39.9% 0.01 296.81);
+      border-radius: 50px;
+      height: 25px;
+      width: 25px;
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+
+    .note-card h3 {
+      font-size: 1.35rem;
+      color: lch(100% 0.01 296.81);
+      margin-bottom: auto;
+    }
+
+    .note-card p {
+      flex-grow: 1;
+      font-weight: bold;
+      font-size: 1.25rem;
+      color: hsl(0, 0%, 97%);
+      line-height: 1.5;
+    }
+
+    .note-card small {
+      display: block;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      color: hwb(0 75% 25%);
+      font-size: 0.85rem;
+    }
+
+    .note-card button {
+      background-color: #ef4444;
+      font-size: 0.95rem;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 8px;
+      width: 100px;
+      margin-left: auto;
+      border: 2px solid #ef4444;
+      transition: all 0.3s ease-in;
+    }
+
+    .note-card button:hover {
+      background-color: transparent;
+      color: #ef4444;
+      border: 2px solid #ef4444;
+      box-shadow: 0 6px 15px #ef4444;
+    }
+
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .btns {
+        width: 100%
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .input-area {
+        padding: 15px;
+      }
+
+      input,
+      textarea,
+      button {
+        font-size: 1rem;
+      }
+
+      .note-card h3 {
+        font-size: 1.1rem;
+      }
+
+      .note-card button {
+        font-size: 0.75rem;
+        padding: 10px;
+        margin-top: 10px;
+      }
+
+      .note-card p {
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 0;
+      }
+
+      .note-card span {
+        font-size: 0.5rem;
+        height: 20px;
+        width: 20px;
+        padding: 3px;
+      }
+
+      .input-area {
+        gap: 10px;
+      }
+
+      .notes {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Notes App</h1>
+
+    <div class="input-area">
+      <input type="text" id="noteTitle" placeholder="Enter Note Title" />
+      <textarea id="noteBody" rows="4" placeholder="Enter Note Body"></textarea>
+      <div class="btns">
+        <button id="addNote">Add Note</button>
+        <button id="clrNote">Clear Text</button>
+      </div>
+    </div>
+
+    <div id="notesContainer" class="notes"></div>
+  </div>
+
+  <script>
+    let notes = [];
+
+    const titleInput = document.getElementById("noteTitle");
+    const bodyInput = document.getElementById("noteBody");
+    const addBtn = document.getElementById("addNote");
+    const clrBtn = document.getElementById("clrNote");
+    const notesContainer = document.getElementById("notesContainer");
+
+    addBtn.addEventListener("click", () => {
+      const title = titleInput.value.trim();
+      const body = bodyInput.value.trim();
+
+      if (title === "" || body === "") return;
+
+      const timestamp = new Date().toLocaleString();
+
+      const newNote = { title, body, timestamp };
+      notes.push(newNote);
+      titleInput.value = "";
+      bodyInput.value = "";
+      renderNotes();
+    });
+
+    clrBtn.addEventListener("click", () => {
+      titleInput.value = "";
+      bodyInput.value = "";
+    });
+
+    function renderNotes() {
+      notesContainer.innerHTML = "";
+
+      notes.map((note, index) => {
+        const card = document.createElement("div");
+        card.className = "note-card";
+
+        const noteIndex = document.createElement("span");
+        noteIndex.textContent = `${index + 1}`;
+
+        const noteTitle = document.createElement("h3");
+        noteTitle.textContent = `Title: ${note.title}`;
+
+        const noteBody = document.createElement("p");
+        noteBody.textContent = note.body;
+
+        const noteTime = document.createElement("small");
+        noteTime.textContent = `Created on: ${note.timestamp}`;
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Delete";
+        delBtn.addEventListener("click", () => {
+          notes.splice(index, 1);
+          renderNotes();
+        });
+
+        card.appendChild(noteIndex);
+        card.appendChild(noteTitle);
+        card.appendChild(noteBody);
+        card.appendChild(noteTime);
+        card.appendChild(delBtn);
+
+        notesContainer.appendChild(card);
+      });
+    }
+  </script>
+
+</body>
+
+</html>
